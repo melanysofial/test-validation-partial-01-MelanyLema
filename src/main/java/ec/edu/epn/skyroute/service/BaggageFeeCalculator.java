@@ -34,7 +34,28 @@ public class BaggageFeeCalculator {
      * @throws IllegalArgumentException si los parámetros no cumplen las restricciones
      */
     public double calculateFee(double weight, int bagCount, Long passengerId) {
-        // TODO: Implementar lógica de negocio y validación de excepciones
-        return 0.0;
+
+        double total = bagCount * 30;
+        if (weight > 23) {
+            total += bagCount * 50;
+        }
+
+        boolean esVip = passengerService.isVip(passengerId);
+        if (esVip && weight <= 23) {
+            total -= 30;
+        }
+
+        //restricciones
+        if (weight <= 0) {
+            throw new IllegalArgumentException("Parámetros de equipaje inválidos.");
+        }
+        if (bagCount < 1) {
+            throw new IllegalArgumentException("Parámetros de equipaje inválidos.");
+        }
+        if (passengerId == null) {
+            throw new IllegalArgumentException("Parámetros de equipaje inválidos.");
+        }
+
+        return total;
     }
 }
